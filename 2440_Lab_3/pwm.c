@@ -3,7 +3,7 @@
 
 
 #define SYSTEM_CLOCK        3000000  // [Hz] system_msp432p401r.c
-#define PWM_FREQUENCY       10000   // [Hz] PWM frequency desired
+#define PWM_FREQUENCY       100000   // [Hz] PWM frequency desired
 #define CALC_PERIOD(X)      (SYSTEM_CLOCK / X) //calc # of ticks in period
 
 
