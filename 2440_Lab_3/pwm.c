@@ -27,10 +27,12 @@ void start_pwm(uint8_t duty_cycle){
     TA0CTL &= ~0b100000;
 
 }
+
 /* Stop Mode: clear all Mode Control bits, MC, in TAxCTL register */
 void stop_pwm(void){
     TA0CTL &= ~0x30;//0011 0000
 }
+
 /* Config P2.4 to output TA0.1 waveform */
  void config_pwm_gpio(void){
      P2OUT &= ~0b10000; // clear pin 4 (not sure if this is necessary)
