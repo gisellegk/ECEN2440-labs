@@ -12,9 +12,12 @@ void config_interrupt_timer(void){
     TA0CTL |= 0b1000000000; // SMCLK set 1 in bit 9
     TA0CTL &= ~0b100000000; // SMCLK set 0 in bit 8
     TA0CCTL1 |= 0x0E0; //0b 1110 0000; //set mode 7 (reset set)
-    TA0CTL |= 0b10; //enable timer interrupt
-    NVIC_EnableIRQ(TA0_0_IRQn);
+    TA0CTL |= 0b10; //enable timer interrupt 8
+    NVIC_EnableIRQ(TA0_0_IRQn); //enabled everything
+    IPR2 |= 0x20;//set priority of interrupt 8 to 2
     //priority
+
+    //we need to have CCR0 = to 50 ms cycles
 }
 
 
