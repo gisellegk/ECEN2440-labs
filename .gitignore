@@ -7,3 +7,5 @@ RemoteSystemsTempFiles/*
 /.metadata/
 */.gitignore
 */.settings/*
+
+*/.launches/*
