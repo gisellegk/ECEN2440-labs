@@ -8,15 +8,18 @@
 
 
 void config_interrupt_timer(void){
+
+    //timer stuff
     TA0CTL &= ~0x0030; //halted timer (stop mode)
     TA0CTL |= 0b100; // CLR
 
     TA0CTL |= 0b1000000000; // SMCLK set 1 in bit 9
     TA0CTL &= ~0b100000000; // SMCLK set 0 in bit 8
     TA0CTL |= 0b0010000000; // div by 4 set bit 7 to 1
-    //TA0CTL &= ~0b1000000; //div by 4 set bit 6 to 0
-    TA0CCTL1 &= ~0x101; //set to compare mode in bit 8 & cleared flag pending
-    TA0CCTL1 |= 0x0E0; //0b 1110 0000; //set mode 7 (reset set)
+
+    TA0CCTL0 &= ~0x101; //set to compare mode in bit 8 & cleared flag pending
+    TA0CCTL0 &= ~( 111 << OUTMOD_OFS); //let's try mode 0
+    TA0CCTL0 |= 1 << CCIE_OFS;//enable interrupt
     TA0CTL |= 0b10; //enable timer interrupt 8
 
 
