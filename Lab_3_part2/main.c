@@ -1,40 +1,23 @@
+
+/* ECEN 2440
+ * Lab 3, Part 2 - Interrupt with Timer A0
+ * Phaedra Curlin, Nanu Dahal, Giselle Koo
+ */
+
 #include <msp.h>
 #include "timerA0int.h"
 
-void initButton();
+/*
+*
+*/
 
 void main(void)
 {
-	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;		// stop watchdog timer
-	config_interrupt_timer();
-	config_interrupt_gpio();
-	start_interrupt();
-	while(1){
 
-	    /*if((P1IN & 0b10) != 0b10){
-	        //left button press
-	        start_interrupt();
-	    } else if((P1IN & 0b10000) != 0b10000){
-	        //right button press
-	        stop_interrupt();
-	    }*/
-	}
-
+	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;      //Halts the watchdog timer of the MSP432
+	config_interrupt_timer();                        //Configures the interrupt and timer in timerA0int.c
+	config_interrupt_gpio();                         //Configures P2.2 to be used with the timer
+	start_interrupt();                               //Initializes the interrupt
 }
 
 
-void initButton(){
-    // set P1.1 and P1.4 as input
-    P1DIR &= ~0b10010;
-    // pull up resistor
-    P1REN |= 0b10010; // enable pulling resistor
-    P1OUT |= 0b10010; // this makes it pull up
-}
-
-void TA0_0_IRQHandler (void){
-    //code goes here
-    if(TA0CCTL0 & 0b1){
-        P2OUT ^= 0b100;
-        TA0CCTL0 &= ~0b1; //clear flag pending? i hope?
-    }
-}

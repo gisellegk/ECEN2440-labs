@@ -54,5 +54,10 @@ void config_interrupt_gpio(void){
 
 }
 
-
+void TA0_0_IRQHandler (void){
+    if(TA0CCTL0 & 0b1){
+        P2OUT ^= 0b100;
+        TA0CCTL0 &= ~0b1; //clear flag pending? i hope?
+    }
+}
 
