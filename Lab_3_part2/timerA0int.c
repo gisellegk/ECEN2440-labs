@@ -4,52 +4,42 @@
 
 #define SYSTEM_CLOCK        3000000/4  // [Hz] system_msp432p401r.c
 #define Interrupt_frequency     20   // [Hz] PWM frequency desired
-#define CALC_PERIOD(X)      (SYSTEM_CLOCK / X) //calc # of ticks in period
-
+#define CALC_PERIOD(X)      (SYSTEM_CLOCK / X) //Calculate # of ticks in period
 
 void config_interrupt_timer(void){
 
-    //timer stuff
-    TA0CTL &= ~0x0030; //halted timer (stop mode)
-    TA0CTL |= 0b100; // CLR
+    TA0CTL &= ~0x0030; //Sets the timer to stop mode (halts timer)
+    TA0CTL |= 0b100; // Clears the previous values of the timer
 
-    TA0CTL |= 0b1000000000; // SMCLK set 1 in bit 9
-    TA0CTL &= ~0b100000000; // SMCLK set 0 in bit 8
-    TA0CTL |= 0b0010000000; // div by 4 set bit 7 to 1
+    TA0CTL |= 0b1000000000; // Setting timer to SMCLK (set 1 in bit 9) and then set 0 in bit 8
+    TA0CTL &= ~0b100000000;
+    TA0CTL |= 0b0010000000; // Increase the number of ticks by dividing value by 4 (set bit 7 to 1)
 
-    TA0CCTL0 &= ~0x101; //set to compare mode in bit 8 & cleared flag pending
-    TA0CCTL0 &= ~( 111 << OUTMOD_OFS); //let's try mode 0
-    TA0CCTL0 |= 1 << CCIE_OFS;//enable interrupt
-    TA0CTL |= 0b10; //enable timer interrupt 8
+    TA0CCTL0 &= ~0x101; //Set timer to compare mode (bit 8 to 1) and clears pending flag
+    TA0CCTL0 |= 1 << CCIE_OFS; //Enables the interrupt in TA0
+    TA0CTL |= 0b10; //Enables timer interrupt number 8
 
+    NVIC_EnableIRQ(TA0_0_IRQn); //Enables global interrupts
+    __NVIC_SetPriority(TA0_0_IRQn, 2); //Sets the priority of interrupt 8 to 2
 
-    NVIC_EnableIRQ(TA0_0_IRQn); //enabled everything
-    __enable_irq(); //enable global interrupts
-    __NVIC_SetPriority(TA0_0_IRQn, 2);
-    //NVIC->IPR2 |= 0x20;//set priority of interrupt 8 to 2
-    //priority
-
-    TA0CCR0 = CALC_PERIOD(Interrupt_frequency);//# of ticks in period for 50ms
-    //TA0CCR1 =  TA0CCR0 * 25 / 100;//we need to have CCR0 = to 50 ms cycles       //don't think we need it
-
+    TA0CCR0 = CALC_PERIOD(Interrupt_frequency);//Set CCR0 to the # of ticks in period for 50ms
 }
 
 
 void start_interrupt(void){
-    TA0CTL |= 0b010000; //up mode
-    TA0CTL &= ~0b100000;//up mode pt 2
+    TA0CTL |= 0b010000; //Sets the timer to up mode (starts timer)
+    TA0CTL &= ~0b100000;
 }
 
 void stop_interrupt(void){
-    TA0CTL &= ~0x30;//0011 0000 (stop mode) halts timer
-
+    TA0CTL &= ~0x30;    //Sets the timer to stop mode (halts timer)
 }
 
 
 void config_interrupt_gpio(void){
-    P2OUT &= ~0b100; // clear pin 4 (not sure if this is necessary)
-    //we want bit #4 to be 0, 1 in SEL1 and SEL0 respectively for primary module function
-    P2DIR |= 0b100; //set as output 1000
+    P2OUT &= ~0b100; //Clears the previous values of port 2 pin 4
+
+    P2DIR |= 0b100; //Sets pin 4 to output
 
 
 }
