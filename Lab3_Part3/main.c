@@ -14,7 +14,7 @@ void main(void)
 	config_i2c();
 	config_pwm_timer();
 	config_pwm_gpio();
-	start_pwm(50);
+	start_pwm(60);
 	config_drv2605l();
 	while(1){
 	}
