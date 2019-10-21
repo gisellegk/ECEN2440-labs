@@ -5,6 +5,7 @@
   * TODO: reset R (timer counter) register
   * - TODO: select SMCLK (3MHz) in the CTL register
   * * - TODO: select reset/set output mode for T0.1 timer using CCTL[1]  */
+//test
 void config_pwm_timer(void);
 /*  - TODO: Start PWM signal on Pin XX at duty_cycle 100kHz,
  * *    Note: the DRV2605L PWM input frequency is XXXX
