@@ -38,7 +38,7 @@ void config_drv2605l() {
     write_register(DRV2605L, CONTROL3, 0b00);         //  set CONTROL3 to PWM
     write_register(DRV2605L, LIBRARY, 0x6);           //   select LRA library
 
-mode_reg = read_register(DRV2605L, MODE);
+    mode_reg = read_register(DRV2605L, MODE);
     if(mode_reg != (MODE_PWM)){
         P1->DIR |= BIT0;
         P1->OUT |= BIT0; //Indicates error occurred
